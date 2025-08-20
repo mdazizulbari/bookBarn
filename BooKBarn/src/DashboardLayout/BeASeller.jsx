@@ -115,7 +115,7 @@ const BeASeller = () => {
           <div>
             <label className="label">Post Code</label>
             <input
-              type="text"
+              type="number"
               {...register("post-code", { required: true })}
               className="input input-bordered w-full"
               placeholder="Enter Post Code"
@@ -189,7 +189,7 @@ const BeASeller = () => {
         <div>
           <label className="label">National ID Number</label>
           <input
-            type="text"
+            type="number"
             {...register("nid", { required: true })}
             className="input input-bordered w-full"
             placeholder="Enter NID"

@@ -32,6 +32,7 @@ export default function SidebarDashboard() {
   const currentPath = location.pathname;
 
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
 
   useEffect(() => {
     if (!user?.email) {

@@ -105,7 +105,6 @@ async function run() {
           "course",
           "condition",
           "image",
-          "id",
           "price",
           "quantity",
           "orderCount",
@@ -119,14 +118,6 @@ async function run() {
               .status(400)
               .send({ message: `Missing required field: ${field}` });
           }
-        }
-
-        // Check if book with same id exists (optional)
-        const existingBook = await bookCollection.findOne({ id: book.id });
-        if (existingBook) {
-          return res
-            .status(400)
-            .send({ message: "Book with this ID already exists." });
         }
 
         // Insert book into collection
