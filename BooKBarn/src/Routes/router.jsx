@@ -17,6 +17,7 @@ import Users from "../DashboardLayout/UsersDashboard";
 import ContactUs from "../DashboardLayout/ContactUs";
 import DeliveryStatus from "../DashboardLayout/DeliveryStatus";
 import BeASeller from "../DashboardLayout/BeASeller";
+import AddBook from "../DashboardLayout/Seller/AddBook";
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
           const res = await fetch(`/warehouses.json`);
           return res.json();
         },
+      },
+      {
+        path: "add-book",
+        element: <AddBook />,
       },
       {
         path: "billings",

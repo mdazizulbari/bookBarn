@@ -107,8 +107,6 @@ async function run() {
           "image",
           "price",
           "quantity",
-          "orderCount",
-          "sellerName",
           "location",
           "bookDescription",
         ];
