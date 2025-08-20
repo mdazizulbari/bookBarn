@@ -84,6 +84,10 @@ export const router = createBrowserRouter([
       {
         path: "beASeller",
         element: <BeASeller />,
+        loader: async () => {
+          const res = await fetch(`/warehouses.json`);
+          return res.json();
+        },
       },
       {
         path: "billings",

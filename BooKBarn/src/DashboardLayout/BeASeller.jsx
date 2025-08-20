@@ -1,11 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { AuthContext } from "../Providers/AuthProviders";
 
 const BeASeller = () => {
-  // const { user } = useAuth();
+  const { user } = useContext(AuthContext);
   const locationData = useLoaderData(); // 👈 using loader for service centers
   const [region, setRegion] = useState("");
 
@@ -24,14 +25,14 @@ const BeASeller = () => {
   const onSubmit = async (data) => {
     const riderData = {
       ...data,
-      // name: user.displayName,
-      // email: user.email,
+      name: user.displayName,
+      email: user.email,
       status: "pending",
       created_at: new Date().toISOString(),
     };
     try {
       console.log(riderData);
-      const res = await axios.post("/riders", riderData);
+      const res = await axios.post("/sellers", riderData);
       if (res.data.insertedId) {
         Swal.fire("✅ Success", "Application submitted", "success");
         reset();
@@ -43,14 +44,14 @@ const BeASeller = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-base-200 rounded-xl shadow">
-      <h2 className="text-2xl font-bold mb-4">🚴 Be a Rider</h2>
+      <h2 className="text-2xl font-bold mb-4">Be A Book Seller</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Name & Email */}
         <div>
           <label className="label">Name</label>
           <input
             type="text"
-            // defaultValue={user.displayName}
+            defaultValue={user.displayName}
             readOnly
             className="input input-bordered w-full cursor-not-allowed"
           />
@@ -59,7 +60,7 @@ const BeASeller = () => {
           <label className="label">Email</label>
           <input
             type="email"
-            // defaultValue={user.email}
+            defaultValue={user.email}
             readOnly
             className="input input-bordered w-full cursor-not-allowed"
           />
@@ -148,39 +149,12 @@ const BeASeller = () => {
           {errors.nid && <p className="text-error text-sm">NID is required</p>}
         </div>
 
-        {/* Bike Brand */}
-        <div>
-          <label className="label">Bike Brand</label>
-          <input
-            type="text"
-            {...register("bike_brand", { required: true })}
-            className="input input-bordered w-full"
-            placeholder="Ex: Honda, Yamaha"
-          />
-          {errors.bike_brand && (
-            <p className="text-error text-sm">Bike brand is required</p>
-          )}
-        </div>
-
-        {/* Registration */}
-        <div>
-          <label className="label">Bike Registration Number</label>
-          <input
-            type="text"
-            {...register("bike_registration", { required: true })}
-            className="input input-bordered w-full"
-            placeholder="Enter Registration No."
-          />
-          {errors.bike_registration && (
-            <p className="text-error text-sm">
-              Registration number is required
-            </p>
-          )}
-        </div>
-
         {/* Submit */}
         <div className="pt-4">
-          <button className="btn text-black btn-primary w-full" type="submit">
+          <button
+            className="btn text-black bg-blue-500 w-full"
+            type="submit"
+          >
             Submit Application 🚀
           </button>
         </div>

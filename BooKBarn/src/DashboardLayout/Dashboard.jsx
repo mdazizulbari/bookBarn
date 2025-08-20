@@ -4,6 +4,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import LogoutIcon from "@mui/icons-material/Logout";
+import StoreIcon from "@mui/icons-material/Store";
 import PeopleIcon from "@mui/icons-material/People"; // For Users
 import MessageIcon from "@mui/icons-material/Message"; // For Messages
 import LocalShippingIcon from "@mui/icons-material/LocalShipping"; // For Delivery Status
@@ -40,7 +41,9 @@ export default function SidebarDashboard() {
     // Fetch role from backend
     const fetchRole = async () => {
       try {
-        const res = await axios.get(`http://localhost:8157/users/${user.email}`);
+        const res = await axios.get(
+          `http://localhost:8157/users/${user.email}`
+        );
         setIsAdmin(res.data?.role === "admin");
       } catch (err) {
         console.error("Error fetching user role:", err);
@@ -55,13 +58,34 @@ export default function SidebarDashboard() {
     ? [
         { label: "Home", icon: <HomeIcon />, path: "/" },
         { label: "Users", icon: <PeopleIcon />, path: "/dashboard/users" },
-        { label: "Messages", icon: <MessageIcon />, path: "/dashboard/messages" },
+        {
+          label: "Messages",
+          icon: <MessageIcon />,
+          path: "/dashboard/messages",
+        },
       ]
     : [
         { label: "Home", icon: <HomeIcon />, path: "/" },
-        { label: "My Cart", icon: <ShoppingCartIcon />, path: "/dashboard/cart" },
-        { label: "My Billings", icon: <ReceiptIcon />, path: "/dashboard/billings" },
-        { label: "Delivery Status", icon: <LocalShippingIcon />, path: "/dashboard/delivery-status" }
+        {
+          label: "My Cart",
+          icon: <ShoppingCartIcon />,
+          path: "/dashboard/cart",
+        },
+        {
+          label: "Be A Seller",
+          icon: <StoreIcon />,
+          path: "/dashboard/beASeller",
+        },
+        {
+          label: "My Billings",
+          icon: <ReceiptIcon />,
+          path: "/dashboard/billings",
+        },
+        {
+          label: "Delivery Status",
+          icon: <LocalShippingIcon />,
+          path: "/dashboard/delivery-status",
+        },
       ];
 
   const handleLogout = () => {
@@ -112,11 +136,16 @@ export default function SidebarDashboard() {
             {navItems.map(({ label, icon, path }) => {
               const isActive =
                 path === "/dashboard/cart"
-                  ? currentPath === "/dashboard" || currentPath === "/dashboard/cart"
+                  ? currentPath === "/dashboard" ||
+                    currentPath === "/dashboard/cart"
                   : currentPath === path;
 
               return (
-                <NavLink key={label} to={path} style={{ textDecoration: "none" }}>
+                <NavLink
+                  key={label}
+                  to={path}
+                  style={{ textDecoration: "none" }}
+                >
                   <ListItem
                     sx={{
                       cursor: "pointer",
