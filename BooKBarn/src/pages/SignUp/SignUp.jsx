@@ -29,7 +29,7 @@ const SignUp = () => {
     if (data.password !== data.confirmPassword) {
       setError("confirmPassword", {
         type: "manual",
-        message: "Passwords do not match",
+        message: "Passwords not matched",
       });
       return;
     }

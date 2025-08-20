@@ -7,6 +7,7 @@ import { AuthContext } from "../Providers/AuthProviders";
 
 const BeASeller = () => {
   const { user } = useContext(AuthContext);
+  console.log(user)
   const locationData = useLoaderData(); // 👈 using loader for service centers
   const [region, setRegion] = useState("");
 
@@ -23,22 +24,51 @@ const BeASeller = () => {
     .map((item) => item.city);
 
   const onSubmit = async (data) => {
-    const riderData = {
+    const sellerData = {
       ...data,
-      name: user.displayName,
+      name: user.displayName || "Anonymous", // Fallback if displayName is null
       email: user.email,
       status: "pending",
       created_at: new Date().toISOString(),
     };
+
     try {
-      console.log(riderData);
-      const res = await axios.post("/sellers", riderData);
-      if (res.data.insertedId) {
-        Swal.fire("✅ Success", "Application submitted", "success");
-        reset();
+      // Step 1: Post seller application
+      // const postRes = await axios.post(
+      //   "http://localhost:5000/sellers",
+      //   sellerData
+      // );
+      // if (postRes.data.insertedId) {
+        // Step 2: Patch user role to "seller"
+        const patchRes = await axios.patch(
+          `http://localhost:8157/users/${user.email}`,
+          {
+            role: "seller",
+          }
+        );
+
+        if (patchRes.data.message === "User role updated successfully") {
+          Swal.fire(
+            "✅ Success",
+            "Seller application submitted and role updated!",
+            "success"
+          );
+          reset(); // Assuming reset is from react-hook-form
+        } else {
+          Swal.fire(
+            "⚠️ Warning",
+            "Application submitted, but role update failed",
+            "warning"
+          );
+        // }
       }
     } catch (err) {
-      Swal.fire("❌ Error", err.message || "Something went wrong", "error");
+      console.error("Error:", err);
+      Swal.fire(
+        "❌ Error",
+        err.response?.data?.message || "Something went wrong",
+        "error"
+      );
     }
   };
 
@@ -151,10 +181,7 @@ const BeASeller = () => {
 
         {/* Submit */}
         <div className="pt-4">
-          <button
-            className="btn text-black bg-blue-500 w-full"
-            type="submit"
-          >
+          <button className="btn text-black bg-blue-500 w-full" type="submit">
             Submit Application 🚀
           </button>
         </div>
