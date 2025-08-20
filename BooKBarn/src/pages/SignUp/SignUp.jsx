@@ -158,7 +158,7 @@ const SignUp = () => {
           <div className="text-center text-white text-lg">Redirecting...</div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Name */}
+            Name
             <div style={inputWrapperStyle(errors.name)}>
               <User size={22} style={iconStyle(errors.name)} />
               <input

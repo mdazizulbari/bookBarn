@@ -7,7 +7,7 @@ import { AuthContext } from "../Providers/AuthProviders";
 
 const BeASeller = () => {
   const { user } = useContext(AuthContext);
-  console.log(user)
+  console.log(user);
   const locationData = useLoaderData(); // 👈 using loader for service centers
   const [region, setRegion] = useState("");
 
@@ -39,27 +39,27 @@ const BeASeller = () => {
       //   sellerData
       // );
       // if (postRes.data.insertedId) {
-        // Step 2: Patch user role to "seller"
-        const patchRes = await axios.patch(
-          `http://localhost:8157/users/${user.email}`,
-          {
-            role: "seller",
-          }
-        );
+      // Step 2: Patch user role to "seller"
+      const patchRes = await axios.patch(
+        `http://localhost:8157/users/${user.email}`,
+        {
+          role: "seller",
+        }
+      );
 
-        if (patchRes.data.message === "User role updated successfully") {
-          Swal.fire(
-            "✅ Success",
-            "Seller application submitted and role updated!",
-            "success"
-          );
-          reset(); // Assuming reset is from react-hook-form
-        } else {
-          Swal.fire(
-            "⚠️ Warning",
-            "Application submitted, but role update failed",
-            "warning"
-          );
+      if (patchRes.data.message === "User role updated successfully") {
+        Swal.fire(
+          "✅ Success",
+          "Seller application submitted and role updated!",
+          "success"
+        );
+        reset(); // Assuming reset is from react-hook-form
+      } else {
+        Swal.fire(
+          "⚠️ Warning",
+          "Application submitted, but role update failed",
+          "warning"
+        );
         // }
       }
     } catch (err) {
@@ -77,7 +77,7 @@ const BeASeller = () => {
       <h2 className="text-2xl font-bold mb-4">Be A Book Seller</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Name & Email */}
-        <div>
+        {/* <div>
           <label className="label">Name</label>
           <input
             type="text"
@@ -85,7 +85,7 @@ const BeASeller = () => {
             readOnly
             className="input input-bordered w-full cursor-not-allowed"
           />
-        </div>
+        </div> */}
         <div>
           <label className="label">Email</label>
           <input
@@ -96,16 +96,34 @@ const BeASeller = () => {
           />
         </div>
 
-        {/* Age */}
-        <div>
-          <label className="label">Age</label>
-          <input
-            type="number"
-            {...register("age", { required: true })}
-            className="input input-bordered w-full"
-            placeholder="Enter your age"
-          />
-          {errors.age && <p className="text-error text-sm">Age is required</p>}
+        <div className="grid grid-cols-2 gap-4">
+          {/* Age */}
+          <div className="">
+            <label className="label">Age</label>
+            <input
+              type="number"
+              {...register("age", { required: true })}
+              className="input input-bordered w-full"
+              placeholder="Enter your age"
+            />
+            {errors.age && (
+              <p className="text-error text-sm">Age is required</p>
+            )}
+          </div>
+
+          {/* Post Code */}
+          <div>
+            <label className="label">Post Code</label>
+            <input
+              type="text"
+              {...register("post-code", { required: true })}
+              className="input input-bordered w-full"
+              placeholder="Enter Post Code"
+            />
+            {errors.nid && (
+              <p className="text-error text-sm">Post Code is required</p>
+            )}
+          </div>
         </div>
 
         {/* Region & District */}
