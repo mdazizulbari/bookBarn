@@ -28,7 +28,9 @@ const BookCard = ({ book, onAddToCart, onDelete }) => {
 
     const userRole = async () => {
       try {
-        const res = await axios.get(`http://localhost:8157/users/${user.email}`);
+        const res = await axios.get(
+          `http://localhost:8157/users/${user.email}`
+        );
         setAdmin(res.data?.role === "admin");
       } catch (err) {
         console.error("Error fetching role:", err);
@@ -71,20 +73,21 @@ const BookCard = ({ book, onAddToCart, onDelete }) => {
     } catch (err) {
       console.error("Error adding to cart:", err?.response || err);
       toast.error(
-        err?.response?.data?.message || "Failed to add to cart. Please try again."
+        err?.response?.data?.message ||
+          "Failed to add to cart. Please try again."
       );
     }
   };
 
   const handleDeleteBook = async () => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#e53935',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonColor: "#e53935",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
       reverseButtons: true,
     });
 
@@ -93,9 +96,9 @@ const BookCard = ({ book, onAddToCart, onDelete }) => {
         await axios.delete(`http://localhost:8157/books/${book._id}`);
 
         Swal.fire({
-          icon: 'success',
-          title: 'Deleted!',
-          text: 'Book has been deleted.',
+          icon: "success",
+          title: "Deleted!",
+          text: "Book has been deleted.",
           timer: 2000,
           showConfirmButton: false,
         });
@@ -105,9 +108,11 @@ const BookCard = ({ book, onAddToCart, onDelete }) => {
         console.error("Error deleting book:", err);
 
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err?.response?.data?.message || 'Failed to delete book. Please try again.',
+          icon: "error",
+          title: "Error",
+          text:
+            err?.response?.data?.message ||
+            "Failed to delete book. Please try again.",
         });
       }
     }
@@ -198,7 +203,10 @@ const BookCard = ({ book, onAddToCart, onDelete }) => {
             </Typography>
 
             <Typography variant="body2" sx={{ color: colors.textSecondary }}>
-              <strong>Author:</strong> {book.author.length > 25 ? book.author.slice(0, 22) + "..." : book.author}
+              <strong>Author:</strong>{" "}
+              {book.author.length > 25
+                ? book.author.slice(0, 22) + "..."
+                : book.author}
             </Typography>
 
             <Typography variant="body2" sx={{ color: colors.textSecondary }}>
@@ -206,19 +214,23 @@ const BookCard = ({ book, onAddToCart, onDelete }) => {
             </Typography>
 
             <Typography variant="body2" sx={{ color: colors.textSecondary }}>
-              <strong>Condition:</strong> {book.condition.charAt(0).toUpperCase() + book.condition.slice(1)}
+              <strong>Condition:</strong>{" "}
+              {book.condition.charAt(0).toUpperCase() + book.condition.slice(1)}
             </Typography>
           </Box>
 
           <Box>
             <Typography variant="body2" sx={{ color: colors.textDisabled }}>
-              <strong>Seller:</strong> {book.sellerName}
+              <strong>Seller:</strong> {book.sellerEmail}
             </Typography>
             <Typography variant="body2" sx={{ color: colors.textDisabled }}>
               <strong>Location:</strong> {book.location}
             </Typography>
 
-            <Typography variant="h5" sx={{ color: colors.successMain, fontWeight: 700, mt: 1 }}>
+            <Typography
+              variant="h5"
+              sx={{ color: colors.successMain, fontWeight: 700, mt: 1 }}
+            >
               ৳{book.price}
             </Typography>
 

@@ -47,12 +47,15 @@ async function run() {
       }
     });
 
+    // GET books (updated to support sellerEmail query)
     app.get("/books", async (req, res) => {
       try {
-        const result = await bookCollection.find().toArray();
+        const sellerEmail = req.query.sellerEmail;
+        const query = sellerEmail ? { sellerEmail } : {};
+        const result = await bookCollection.find(query).toArray();
         res.send(result);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching books:", error);
         res.status(500).send({ message: "Server error" });
       }
     });
