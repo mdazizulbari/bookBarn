@@ -31,13 +31,12 @@ const AuthProviders = ({ children }) => {
 
   const signInWithGoogle = () => {
     setLoading(true);
-    console.log('Hit')
+    console.log("Hit");
     return signInWithPopup(auth, googleProvider);
   };
 
-  const updateUserProfile = (displayName) => {
-    if (!auth.currentUser) return Promise.reject("No user is signed in");
-    return updateProfile(auth.currentUser, { displayName });
+  const updateUserProfile = (profileInfo) => {
+    return updateProfile(auth.currentUser, profileInfo);
   };
 
   const logOut = () => {
@@ -66,9 +65,7 @@ const AuthProviders = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
 

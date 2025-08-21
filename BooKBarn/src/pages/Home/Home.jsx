@@ -34,6 +34,7 @@ const Home = () => {
       .catch((error) => console.error("Error fetching reviews:", error));
   }, []);
 
+
   const handleExploreClick = () => {
     navigate("/all-books");
   };
@@ -80,7 +81,7 @@ const Home = () => {
         overflowX: "hidden",
       }}
     >
-        <title>BookBarn - Your Student Book Exchange</title>
+      <title>BookBarn - Your Student Book Exchange</title>
 
       {/* Hero Section */}
       <Box sx={{ maxWidth: 800, textAlign: "center" }}>
@@ -270,7 +271,7 @@ const Home = () => {
           </Typography>
         ) : (
           <Slider {...reviewSliderSettings}>
-            {reviews.map(({ id, name, avatar, text, rating }) => (
+            {reviews.map(({ id, title, name, avatar, message, rating }) => (
               <Paper
                 key={id}
                 elevation={0}
@@ -315,7 +316,7 @@ const Home = () => {
                     mt: 1,
                   }}
                 >
-                  {name}
+                  {name} - {title}
                 </Typography>
                 <Rating value={rating} readOnly precision={0.5} />
                 <Typography
@@ -328,7 +329,7 @@ const Home = () => {
                     maxWidth: "95%",
                   }}
                 >
-                  "{text}"
+                  "{message}"
                 </Typography>
               </Paper>
             ))}

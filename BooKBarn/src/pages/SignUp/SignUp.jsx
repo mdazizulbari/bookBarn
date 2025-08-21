@@ -8,7 +8,7 @@ import axios from "axios";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { createUser } = useContext(AuthContext);
+  const { updateUserProfile, createUser } = useContext(AuthContext);
 
   const {
     register,
@@ -37,16 +37,23 @@ const SignUp = () => {
 
     try {
       await createUser(data.email, data.password);
+
       const savedUser = {
         name: data.name,
         email: data.email,
         role: "user",
       };
-
       const response = await axios.post(
         "http://localhost:8157/users",
         savedUser
       );
+
+      // update user profile in firebase
+      const userProfile = {
+        displayName: data.name,
+        photoURL: data.photoURL,
+      };
+      updateUserProfile(userProfile);
 
       if (response.data.insertedId || response.data.acknowledged) {
         toast.success("Account created successfully");
@@ -158,7 +165,6 @@ const SignUp = () => {
           <div className="text-center text-white text-lg">Redirecting...</div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
-            Name
             <div style={inputWrapperStyle(errors.name)}>
               <User size={22} style={iconStyle(errors.name)} />
               <input
@@ -169,7 +175,6 @@ const SignUp = () => {
               />
             </div>
             {errors.name && <ErrorMessage message={errors.name.message} />}
-
             {/* Email */}
             <div style={inputWrapperStyle(errors.email)}>
               <Mail size={22} style={iconStyle(errors.email)} />
@@ -195,6 +200,16 @@ const SignUp = () => {
             </div>
             {errors.email && <ErrorMessage message={errors.email.message} />}
 
+            <div style={inputWrapperStyle(errors.name)}>
+              <User size={22} style={iconStyle(errors.name)} />
+              <input
+                type="text"
+                {...register("photoURL", { required: "PhotoURL is required" })}
+                placeholder="Your Photo URL"
+                style={inputStyle}
+              />
+            </div>
+
             {/* Password */}
             <div style={inputWrapperStyle(errors.password)}>
               <Lock size={22} style={iconStyle(errors.password)} />
@@ -214,7 +229,6 @@ const SignUp = () => {
             {errors.password && (
               <ErrorMessage message={errors.password.message} />
             )}
-
             {/* Confirm Password */}
             <div style={inputWrapperStyle(errors.confirmPassword)}>
               <Lock size={22} style={iconStyle(errors.confirmPassword)} />
@@ -230,7 +244,6 @@ const SignUp = () => {
             {errors.confirmPassword && (
               <ErrorMessage message={errors.confirmPassword.message} />
             )}
-
             {/* Submit Button */}
             <button
               type="submit"

@@ -70,6 +70,58 @@ async function run() {
       }
     });
 
+    // POST review
+    app.post("/reviews", async (req, res) => {
+      try {
+        const reviewData = req.body;
+        const requiredFields = [
+          "bookId",
+          "title",
+          "email",
+          "name",
+          "message",
+          "rating",
+          "created_at",
+        ];
+        for (const field of requiredFields) {
+          if (!reviewData[field]) {
+            return res
+              .status(400)
+              .send({ message: `Missing required field: ${field}` });
+          }
+        }
+
+        // Prevent duplicate review
+        const existingReview = await reviewCollection.findOne({
+          bookId: reviewData.bookId,
+          email: reviewData.email,
+        });
+        if (existingReview) {
+          return res
+            .status(400)
+            .send({ message: "You have already reviewed this book" });
+        }
+
+        // Validate rating
+        if (reviewData.rating < 1 || reviewData.rating > 5) {
+          return res
+            .status(400)
+            .send({ message: "Rating must be between 1 and 5" });
+        }
+
+        const result = await reviewCollection.insertOne(reviewData);
+        res
+          .status(201)
+          .send({
+            message: "Review added successfully",
+            insertedId: result.insertedId,
+          });
+      } catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).send({ message: "Server error" });
+      }
+    });
+
     // Get books by category
     // Updated category route
     app.get("/books/category/:category", async (req, res) => {

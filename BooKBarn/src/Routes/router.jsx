@@ -19,6 +19,7 @@ import DeliveryStatus from "../DashboardLayout/DeliveryStatus";
 import BeASeller from "../DashboardLayout/BeASeller";
 import AddBook from "../DashboardLayout/Seller/AddBook";
 import MyBooks from "../DashboardLayout/Seller/MyBooks";
+import ReviewBooks from "../DashboardLayout/ReviewBooks";
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ export const router = createBrowserRouter([
       {
         path: "add-book",
         element: <AddBook />,
+      },
+      {
+        path: "review-books",
+        element: <ReviewBooks />,
       },
       {
         path: "billings",

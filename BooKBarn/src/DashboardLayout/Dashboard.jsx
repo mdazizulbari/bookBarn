@@ -1,5 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
+import RateReviewIcon from "@mui/icons-material/RateReview"; // Add this
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -100,6 +101,11 @@ export default function SidebarDashboard() {
           label: "My Billings",
           icon: <ReceiptIcon />,
           path: "/dashboard/billings",
+        },
+        {
+          label: "Review Books",
+          icon: <RateReviewIcon />,
+          path: "/dashboard/review-books",
         },
         {
           label: "Delivery Status",
