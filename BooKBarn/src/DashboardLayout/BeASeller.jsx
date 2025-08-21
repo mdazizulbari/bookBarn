@@ -1,14 +1,14 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom"; // Added useNavigate
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Providers/AuthProviders";
 
 const BeASeller = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
-  const locationData = useLoaderData(); // 👈 using loader for service centers
+  const navigate = useNavigate(); // Added for redirection
+  const locationData = useLoaderData(); // Using loader for service centers
   const [region, setRegion] = useState("");
 
   const {
@@ -33,7 +33,7 @@ const BeASeller = () => {
     };
 
     try {
-      // Step 1: Post seller application
+      // Step 1: Post seller application (commented out as per original)
       // const postRes = await axios.post(
       //   "http://localhost:5000/sellers",
       //   sellerData
@@ -48,20 +48,27 @@ const BeASeller = () => {
       );
 
       if (patchRes.data.message === "User role updated successfully") {
-        Swal.fire(
-          "✅ Success",
-          "Seller application submitted and role updated!",
-          "success"
-        );
-        reset(); // Assuming reset is from react-hook-form
+        Swal.fire({
+          title: "✅ Success",
+          text: "Seller application submitted and role updated! Redirecting to Add Book...",
+          icon: "success",
+          timer: 2000, // Show for 2 seconds
+          showConfirmButton: false,
+        }).then(() => {
+          // Refresh page to update AuthContext
+          window.location.reload();
+          // Redirect to /dashboard/add-book
+          // navigate("/dashboard/add-book");
+        });
+        reset(); // Reset form
       } else {
         Swal.fire(
           "⚠️ Warning",
           "Application submitted, but role update failed",
           "warning"
         );
-        // }
       }
+      // }
     } catch (err) {
       console.error("Error:", err);
       Swal.fire(
@@ -76,16 +83,7 @@ const BeASeller = () => {
     <div className="max-w-2xl mx-auto p-6 bg-base-200 rounded-xl shadow">
       <h2 className="text-2xl font-bold mb-4">Be A Book Seller</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Name & Email */}
-        {/* <div>
-          <label className="label">Name</label>
-          <input
-            type="text"
-            defaultValue={user.displayName}
-            readOnly
-            className="input input-bordered w-full cursor-not-allowed"
-          />
-        </div> */}
+        {/* Email */}
         <div>
           <label className="label">Email</label>
           <input
@@ -98,7 +96,7 @@ const BeASeller = () => {
 
         <div className="grid grid-cols-2 gap-4">
           {/* Age */}
-          <div className="">
+          <div>
             <label className="label">Age</label>
             <input
               type="number"
@@ -120,7 +118,7 @@ const BeASeller = () => {
               className="input input-bordered w-full"
               placeholder="Enter Post Code"
             />
-            {errors.nid && (
+            {errors["post-code"] && (
               <p className="text-error text-sm">Post Code is required</p>
             )}
           </div>
