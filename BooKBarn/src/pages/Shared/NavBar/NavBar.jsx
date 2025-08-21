@@ -27,9 +27,7 @@ const NavBar = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const { user, logOut } = useContext(AuthContext);
-  console.log(user)
   const navigate = useNavigate();
-  console.log(user)
   useEffect(() => {
     if (user?.email) {
       axios
